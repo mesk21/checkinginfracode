@@ -1,0 +1,39 @@
+- name: Create EC2 instances
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    instance_type: t2.micro
+    ami: ami-067ab7aa1c70daa19
+    region: us-east-1
+    key_name: tomcatserver
+    security_group: launch-wizard-3
+    tag_name: 11901993-saurabh
+  tasks:
+    - name: Launch EC2 Instance 1
+      amazon.aws.ec2_instance:
+        key_name: "{{ key_name }}"
+        instance_type: "{{ instance_type }}"
+        image:
+          id: "{{ ami }}"
+        region: "{{ region }}"
+        vpc_subnet_id: "subnet-08c02a89b47c8a948"
+        security_group: "{{ security_group }}"
+        tags:
+          Name: "{{ tag_name }}-1"
+        wait: true
+      register: ec2_1
+
+    - name: Launch EC2 Instance 2
+      amazon.aws.ec2_instance:
+        key_name: "{{ key_name }}"
+        instance_type: "{{ instance_type }}"
+        image:
+          id: "{{ ami }}"
+        region: "{{ region }}"
+        vpc_subnet_id: "subnet-05980ae11d8044247"
+        security_group: "{{ security_group }}"
+        tags:
+          Name: "{{ tag_name }}-2"
+        wait: true
+      register: ec2_2
